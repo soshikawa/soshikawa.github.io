@@ -1,0 +1,9 @@
+title: My Blog
+description: Notes and writing.
+# For a project site (repo not named <user>.github.io), set baseurl to "/<repo-name>".
+baseurl: ""
+url: ""
+theme: minima
+plugins:
+  - jekyll-feed
+permalink: /:title/
