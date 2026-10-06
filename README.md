@@ -11,6 +11,10 @@ Create `_posts/YYYY-MM-DD-title.md` with front matter:
     date: YYYY-MM-DD
     ---
 
+## Preview drafts locally
+`python3 _preview/preview.py` then open http://localhost:4000. It lists `_drafts/` and `_posts/`,
+renders them in a minima-like layout, and reloads the page whenever you save.
+
 ## Publish
 1. Create a public GitHub repo on the account you want.
    - Name it `<username>.github.io` to serve at `https://<username>.github.io/`, or

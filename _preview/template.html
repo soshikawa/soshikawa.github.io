@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview · __SITE_TITLE__</title>
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markdown-it-footnote@4/dist/markdown-it-footnote.min.js"></script>
+<style>
+  /* Approximation of the minima theme (GitHub Pages default) */
+  body { margin: 0; font: 400 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         color: #111; background: #fdfdfd; -webkit-font-smoothing: antialiased; }
+  .draft-bar { position: sticky; top: 0; z-index: 10; background: #fff4d6; border-bottom: 1px solid #e8d49a;
+               font-size: 13px; padding: 6px 30px; display: flex; gap: 16px; align-items: center; }
+  .draft-bar a { color: #6b5a1d; }
+  .draft-bar .live { margin-left: auto; color: #8a7a3d; }
+  .wrapper { max-width: 740px; margin: 0 auto; padding: 0 30px; }
+  .site-header { border-top: 5px solid #424242; border-bottom: 1px solid #e8e8e8; min-height: 55.95px; }
+  .site-title { font-size: 26px; font-weight: 300; line-height: 54px; letter-spacing: -1px; color: #424242; text-decoration: none; }
+  .site-nav { float: right; line-height: 54px; }
+  .site-nav a { color: #111; margin-left: 20px; text-decoration: none; }
+  .page-content { padding: 30px 0; }
+  .site-footer { border-top: 1px solid #e8e8e8; padding: 30px 0; color: #828282; font-size: 14px; }
+  a { color: #2a7ae2; text-decoration: none; } a:hover { text-decoration: underline; }
+  h1, h2, h3, h4 { font-weight: 400; margin: 0 0 15px; }
+  p, blockquote, pre, ul, ol, table, figure { margin: 0 0 15px; }
+  .post-title { font-size: 42px; letter-spacing: -1px; line-height: 1; }
+  .post-meta { font-size: 14px; color: #828282; }
+  .post-header { margin-bottom: 30px; }
+  .post-content { margin-bottom: 30px; }
+  .post-content h2 { font-size: 32px; } .post-content h3 { font-size: 26px; } .post-content h4 { font-size: 20px; }
+  .post-list { list-style: none; margin: 0; padding: 0; } .post-list h3 { font-size: 24px; }
+  .post-list-heading { font-size: 28px; }
+  img, iframe { max-width: 100%; vertical-align: middle; }
+  ul, ol { margin-left: 30px; padding: 0; }
+  blockquote { color: #828282; border-left: 4px solid #e8e8e8; padding-left: 15px; font-size: 18px; letter-spacing: -1px; font-style: italic; }
+  blockquote > :last-child { margin-bottom: 0; }
+  code { font-size: 15px; border: 1px solid #e8e8e8; border-radius: 3px; background: #eef; padding: 1px 5px; }
+  pre { border: 1px solid #e8e8e8; border-radius: 3px; background: #eef; padding: 8px 12px; overflow-x: auto; }
+  pre > code { border: 0; padding: 0; }
+  hr { border: 0; border-top: 1px solid #e8e8e8; margin: 30px 0; }
+  table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #dedede; padding: 3px 10px; }
+  th { background: #f0f0f0; } tr:nth-child(even) { background: #f7f7f7; }
+  .footnotes { font-size: 14px; } .footnotes-sep { margin-top: 40px; }
+  .warn { background: #ffecec; border: 1px solid #f3b4b4; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="draft-bar" id="bar" hidden>
+  <strong>DRAFT PREVIEW</strong><a href="/">← all drafts</a><span id="warnings"></span><span class="live" id="live">● live</span>
+</div>
+<header class="site-header"><div class="wrapper">
+  <a class="site-title" href="/">__SITE_TITLE__</a>
+  <nav class="site-nav"><a href="/">About</a></nav>
+</div></header>
+<main class="page-content"><div class="wrapper" id="content">__CONTENT__</div></main>
+<footer class="site-footer"><div class="wrapper">__SITE_TITLE__ · local preview, not the published site</div></footer>
+<script>
+const DATA = __DATA__;
+if (DATA) {
+  document.getElementById("bar").hidden = false;
+  document.title = DATA.title + " · preview";
+  const md = window.markdownit({ html: true, linkify: true, typographer: true }).use(window.markdownitFootnote);
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const date = DATA.date ? new Date(DATA.date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "";
+  document.getElementById("content").innerHTML =
+    `<article class="post"><header class="post-header"><h1 class="post-title">${esc(DATA.title)}</h1>` +
+    `<p class="post-meta">${date || (DATA.kind === "drafts" ? "unpublished draft" : "")}</p></header>` +
+    `<div class="post-content">${md.render(DATA.markdown)}</div></article>`;
+
+  // Flag images/iframes whose files don't exist, since they'd be broken on the site too.
+  let broken = 0;
+  const flag = () => { document.getElementById("warnings").innerHTML = broken ? `<span class="warn">${broken} missing file(s)</span>` : ""; };
+  document.querySelectorAll(".post-content img").forEach(img => img.addEventListener("error", () => {
+    broken++; flag(); img.alt = "⚠ missing: " + img.getAttribute("src"); img.style.outline = "2px dashed #e55";
+  }));
+  document.querySelectorAll(".post-content iframe[src]").forEach(f =>
+    fetch(f.getAttribute("src"), { method: "HEAD" }).then(r => { if (!r.ok) { broken++; flag(); f.style.outline = "2px dashed #e55"; } }));
+
+  // Live reload: keep scroll position across saves.
+  const key = "scroll:" + location.pathname;
+  try { const y = sessionStorage.getItem(key); if (y) addEventListener("load", () => scrollTo(0, +y)); } catch (e) {}
+  setInterval(async () => {
+    try {
+      const m = await (await fetch(DATA.mtimeUrl, { cache: "no-store" })).text();
+      if (m !== DATA.mtime) { try { sessionStorage.setItem(key, scrollY); } catch (e) {} location.reload(); }
+      document.getElementById("live").textContent = "● live";
+    } catch (e) { document.getElementById("live").textContent = "○ server stopped"; }
+  }, 1000);
+}
+</script>
+</body>
+</html>
