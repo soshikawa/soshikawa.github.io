@@ -16,8 +16,7 @@ In order to replicate the findings of the Goodfire paper, we started by trying t
 
 We tested talkie on multiple tasks in which we believed we would be able to find manifold structure. In each task, we prompted talkie multiple times, and grouped the activations and the output probabilities by the correct answer. The activations were projected to 64 dimensions via PCA, and the output probabilities were projected onto Hellinger space to get a Euclidean distance between the different probability distributions. Each point with the same correct answer was averaged together into a "concept centroid", and a manifold structure was computed through these concept centroids. The procedure is described in detail in the Goodfire paper.[^1]
 
-- **r_euc** is the correlation between pairwise centroid distances in activation space and in output space.
-- **order** checks whether the activation centroids lie in calendar order.
+
 
 ---
 
@@ -31,19 +30,21 @@ We started this investigation by testing on the weekday and month arithmetic tas
 
 after which talkie answers the month.
 
-Testing on this premise resulted in the following.
+Testing on this premise resulted in the following. The following figures display the activation manifold structure of talkie at Layer 35 on the left, and the behavior manifold generated from projecting the output probabilities onto Hellinger space on the right.
+
+- **r_euc** is the correlation between pairwise centroid distances in activation space and in output space.
+- **order** checks whether the activation centroids lie in calendar order.
+
+<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_rings_L35.html" title="Interactive 3D view of the weekday centroids at layer 35 and in output space" width="100%" height="720" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+
+[Open the interactive 3D weekday view]({{ site.baseurl }}/assets/talkie/weekdays_rings_L35.html)
 
 
-<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_rings_3d.html" title="Interactive 3D view of the weekday centroids" width="100%" height="640" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+3D view of Weekday Activation Manifold at Layer 35, and at output space
 
-[Open the interactive 3D weekday view]({{ site.baseurl }}/assets/talkie/weekdays_rings_3d.html)
+<iframe src="{{ site.baseurl }}/assets/talkie/months_rings_L35.html" title="Interactive 3D view of the month centroids at layer 35 and in output space" width="100%" height="720" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
-
-3D view of Weekday Activation Manifold at Layer 35, and at 
-
-<iframe src="{{ site.baseurl }}/assets/talkie/months_rings_3d.html" title="Interactive 3D view of the month centroids" width="100%" height="640" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
-
-[Open the interactive 3D month view]({{ site.baseurl }}/assets/talkie/months_rings_3d.html)
+[Open the interactive 3D month view]({{ site.baseurl }}/assets/talkie/months_rings_L35.html)
 
 One thing to note is that the color coding here is based on the correct answer to these prompts, not the answer talkie gave. In fact, the accuracy of talkie's answers is not very high. After running 3 seeds each of the weekdays and the months tasks, the average accuracy was **0.3682** for weekdays (compared to 0.1429 by chance) and **0.4308** for months (compared to 0.0833 by chance).
 
@@ -67,7 +68,9 @@ This was also reflected in the wrong answers given by the model. We found that 7
 
 The same task was also applied to the category of years. Even though years don't form an obviously cyclic structure like that of months or weekdays, we suspected that there might be a structure that could be extrapolated. Applying the same procedure resulted in the following:
 
-![PCA of answer-decade centroids across layers, next to the output distributions in Hellinger space]({{ site.baseurl }}/assets/talkie/years_rings.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/years_rings_L35.html" title="Interactive 3D view of the answer-decade centroids at layer 35 and in output space" width="100%" height="720" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+
+[Open the interactive 3D year view]({{ site.baseurl }}/assets/talkie/years_rings_L35.html)
 
 Talkie's accuracy in this task was much higher than in any of the previous tasks. Judging based purely on decades yielded an accuracy of **0.9940**.
 
@@ -75,9 +78,7 @@ Talkie's accuracy in this task was much higher than in any of the previous tasks
 
 Because of the way talkie tokenizes numbers, a four-digit year (such as 1865 or 1914) is broken up into a 3-digit token, representing the year up to the decade, and a 1-digit token, representing the specific year (e.g. the year 1865 is represented as `['186', '5']`).
 
-The diagram shows the representation of the decade token as it progresses through the layers of talkie. There appears to be a curved manifold forming in the earlier layers, such as layer 10. This is most likely because the 3-digit tokens (like `'186'`) already have an inherent ordering structure even before the context of "years" is applied.
-
-As the activation progresses through the layers, this initial structure seems to deteriorate; however, a semi-cyclic structure emerges in its place. After incorporating the context of years, the decade tokens seem to match on a century basis (`'170'` matches with `'180'` and `'190'`, etc.).
+As the activation progresses through the layers, a semi-cyclic structure emerges in its place. After incorporating the context of years, the decade tokens seem to match on a century basis (`'170'` matches with `'180'` and `'190'`, etc.).
 
 One question that arised was whether or not the year 1930 had any significance to the model, since the model's training data cutoff year was 1930. Extrapolation of the year arithmetic task reveals that this is not the case. 
 
@@ -88,12 +89,11 @@ The extrapolation of the year arithmetic task all the way to year 2050 reveals t
 
 However, one interesting thing to note is the sharp drop in accuracy transitioning from 20th to 21st Century. A quick review of the samples revealed that a common trend was that the answers would loop back 100 years upon being asked("What is 12 years after 1991?" may yield the answer "1903").
 
-
 Further investigation on the activations of talkie on this task revealed that the decade tokens seem to have a semi-cyclic structure, where the activations for each decade seem to be similar every 100 years. This is clear in a similarity matrix of the decade centroids:
 
-![Cosine similarity between decade centroids across layers]({{ site.baseurl }}/assets/talkie/years_similarity_activation.png)
+![Cosine similarity between decade centroids across layers]({{ site.baseurl }}/assets/talkie/years_similarity_activation_L30_35_no_rho.png)
 
-This is consistent with findings from other research that suggest language models have translational dynamics when it comes to year representations.[^2]
+At both layers 30 and 35, we can observe a striped structure emerging from the decade-level activations. This demonstrates that each decade of each century is internally represented in close proximity to other decades of the same This is consistent with findings from other research that suggest language models have translational dynamics when it comes to year representations.[^2]
 
 ---
 
@@ -103,7 +103,7 @@ We also tested our findings on normal arithmetic tasks in the arithmetic tasks i
 
 > "{y} plus {k} equals"
 
-The results found that the accuracy remains high for this task as well, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
+The results found that the accuracy remains high for this task as well with about **0.980%** accuracy, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
 
 ![Arithmetic Accuracy by "decade"]({{site.baseurl}}/assets/talkie/arith_accuracy_by_answer_tens.png)
 
@@ -112,23 +112,33 @@ The results found that the accuracy remains high for this task as well, which de
 ## Manifold Steering
 
 One key finding from previous research is that is it possible to steer the model output from activation space. We experimented with manifold steering on both the weekday manifold and year arithmetic task.
-Referencing the Goodfire paper again[^1], we steered talkie's activations based on the manifold structure identified in each of layers 10, 20, 30, and 35 of the model. Note that talkie is a model comprised of 39 layers.
+Referencing the Goodfire paper again[^1], we steered talkie's activations based on the manifold structure identified in each of **layers 10, 20, 30, and 35** of the model. Note that talkie is a model comprised of 39 layers.
 
-The results are on the chart below:
+The results are on the charts below:
 
+Weekdays:
 ![Weekday Arithmetic Task Steering]({{site.baseurl}}/assets/talkie/weekdays_trajectories_by_layer_geometric.png)
 
+Months:
+![Month Arithmetic Task Steering]({{site.baseurl}}/assets/talkie/months_trajectories_by_layer_geometric_answer_label.png)
+
+Years:
 ![Year Arithmetic Task Steering]({{site.baseurl}}/assets/talkie/years_trajectories_by_layer_geometric.png)
 
 These results indicate that manifold steering is an effective method of steering the model output. The effect on model output increases as the layers progress, though not necessarily linearly. Manifold steering suddenly jumps in effectiveness between layer 20-30 in  both tasks.
 
 These results were also compared with linear steering:
 
+Weekdays:
 ![Weekday Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/weekdays_trajectories_by_layer_linear_mon_wed.png)
 
+Months:
+![Month Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/months_trajectories_by_layer_linear_answer_label.png)
+
+Years:
 ![Year Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/years_trajectories_by_layer_linear.png)
 
-Linear steering reveals that the behavioral output given by the manifold steering is effective, as linear steering demonstrates little transition between the probability distribution of different categories compared to manifold steering.
+Linear steering reveals that the behavioral output given by the manifold steering is effective, as linear steering demonstrates little transition between the probability distribution of different categories compared to manifold steering. If set a specific start point and end point, linear steering seems to steer the output probability directly from the start point to the end point, which is consistent with the idea that the manifolds representing these concepts are multi-dimensional.
 
 ---
 
@@ -136,6 +146,7 @@ Linear steering reveals that the behavioral output given by the manifold steerin
 
 Despite being trained from pre-1930 text, talkie seems to possess a manifold structure consistent with other LLMs which are trained on modern pieces of text. Though manifolds like weekdays and months seem to be weaker for talkie, it still exists, and is effective in steering the model. It seemed to possess a particularly strong manifold structure for year arithmetic, though other tests indicate that this may point more to the strength talkie has in mathematics in general.
 
+Further investigation is planned to reveal whether this sort of manifold structure would hold up on historical fact recall, a task talkie would most likely be good at, considering the historical documents it was trained from.
 ADD
 
 
