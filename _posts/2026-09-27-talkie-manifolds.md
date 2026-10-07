@@ -103,7 +103,7 @@ We also tested our findings on normal arithmetic tasks in the arithmetic tasks i
 
 > "{y} plus {k} equals"
 
-The results found that the accuracy remains high for this task as well with about **0.980%** accuracy, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
+The results found that the accuracy remains high for this task as well with about **0.980** accuracy, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
 
 ![Arithmetic Accuracy by "decade"]({{site.baseurl}}/assets/talkie/arith_accuracy_by_answer_tens.png)
 
