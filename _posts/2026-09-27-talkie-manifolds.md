@@ -147,7 +147,6 @@ Linear steering reveals that the behavioral output given by the manifold steerin
 Despite being trained from pre-1930 text, talkie seems to possess a manifold structure consistent with other LLMs which are trained on modern pieces of text. Though manifolds like weekdays and months seem to be weaker for talkie, it still exists, and is effective in steering the model. It seemed to possess a particularly strong manifold structure for year arithmetic, though other tests indicate that this may point more to the strength talkie has in mathematics in general.
 
 Further investigation is planned to reveal whether this sort of manifold structure would hold up on historical fact recall, a task talkie would most likely be good at, considering the historical documents it was trained from.
-ADD
 
 
 
