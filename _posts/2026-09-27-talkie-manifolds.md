@@ -97,15 +97,17 @@ This is consistent with findings from other research that suggest language model
 
 ---
 
-## Normal Arithmetic
+## Mathematical Arithmetic
 
 We also tested our findings on normal arithmetic tasks in the arithmetic tasks in the same range of numbers. Changing up the wording from the year arithmetic task, we eliminated any indication mention of years or time in our prompts, instead focusing on purely mathematical expressions, such as 
 
 > "{y} plus {k} equals"
 
-The results found that the accuracy remains extremely high for this task as well, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts.
+The results found that the accuracy remains high for this task as well, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
 
+![Arithmetic Accuracy by "decade"]({{site.baseurl}}/assets/talkie/arith_accuracy_by_answer_tens.png)
 
+---
 
 ## Manifold Steering
 
@@ -120,9 +122,13 @@ The results are on the chart below:
 
 These results indicate that manifold steering is an effective method of steering the model output. The effect on model output increases as the layers progress, though not necessarily linearly. Manifold steering suddenly jumps in effectiveness between layer 20-30 in  both tasks.
 
-Comparing the results to linear steering between the start and the end 
+These results were also compared with linear steering:
 
+![Weekday Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/weekdays_trajectories_by_layer_linear_mon_wed.png)
 
+![Year Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/years_trajectories_by_layer_linear.png)
+
+Linear steering reveals that the behavioral output given by the manifold steering is effective, as linear steering demonstrates little transition between the probability distribution of different categories compared to manifold steering.
 
 ---
 
@@ -130,7 +136,7 @@ Comparing the results to linear steering between the start and the end
 
 Despite being trained from pre-1930 text, talkie seems to possess a manifold structure consistent with other LLMs which are trained on modern pieces of text. Though manifolds like weekdays and months seem to be weaker for talkie, it still exists, and is effective in steering the model. It seemed to possess a particularly strong manifold structure for year arithmetic, though other tests indicate that this may point more to the strength talkie has in mathematics in general.
 
-
+ADD
 
 
 
