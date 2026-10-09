@@ -80,14 +80,21 @@ Because of the way talkie tokenizes numbers, a four-digit year (such as 1865 or 
 
 As the activation progresses through the layers, a semi-cyclic structure emerges in its place. After incorporating the context of years, the decade tokens seem to match on a century basis (`'170'` matches with `'180'` and `'190'`, etc.).
 
-One question that arised was whether or not the year 1930 had any significance to the model, since the model's training data cutoff year was 1930. Extrapolation of the year arithmetic task reveals that this is not the case. 
+### Accuracy Beyond 1930
+
+One question that arised was whether or not the year 1930 had any significance to the model, since the model's training data cutoff year was 1930. Extrapolation of the year arithmetic task reveals an interesting downward trend in accuracy that begins around 1930s and hits the lowest accuracy around 2000s. This trend was particularly evident in prompt templates such as 
+> "Abond issued in {Y} and redeemable after {k} years fell due in "
+
+> "A tree planted in {Y} was {k} years old in "
+
+Both templates held an 100% accuracy prior to the 1930s, and seemd to decline in accuracy after that, which is an interesting phenomenon of note. The overall accuracy and the prompt-based accuracies are each presented in the following figure:
+
 
 
 <iframe src="{{ site.baseurl }}/assets/talkie/years_2050_accuracy_by_answer_decade.html" title="Year Arithmetic in years Ranging from 1700 to 2050" width="100%" height="620" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
-The extrapolation of the year arithmetic task all the way to year 2050 reveals that the answer accuracy consistently stays high beyond 1930, disproving the idea that the year representations differ after 1930, at least for arithmetic tasks.
 
-However, one interesting thing to note is the sharp drop in accuracy transitioning from 20th to 21st Century. A quick review of the samples revealed that a common trend was that the answers would loop back 100 years upon being asked("What is 12 years after 1991?" may yield the answer "1903").
+### Year Manifold Structure
 
 Further investigation on the activations of talkie on this task revealed that the decade tokens seem to have a semi-cyclic structure, where the activations for each decade seem to be similar every 100 years. This is clear in a similarity matrix of the decade centroids:
 
@@ -101,11 +108,28 @@ At both layers 30 and 35, we can observe a striped structure emerging from the d
 
 We also tested our findings on normal arithmetic tasks in the arithmetic tasks in the same range of numbers. Changing up the wording from the year arithmetic task, we eliminated any indication mention of years or time in our prompts, instead focusing on purely mathematical expressions, such as 
 
-> "{y} plus {k} equals"
+> "{n} plus {k} equals"
 
-The results found that the accuracy remains high for this task as well with about **0.980** accuracy, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
+The results found that the accuracy remains high for this task as well with about **0.982** accuracy, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy after 1930 is not observed here. The templates seemed to have a large effect on the accuracy of their answers. Most templates gave highly accuracy answers above 99%, but some templates dropped the average significantly. Specifically, reversing the order in which the "k" component and the "n" component appeared(where "n" is the component corresponding to the years in the year arithmetic task) seemed to drop the accuracy, as seen in templates such as 
+
+> "Add {k} to {n}, and the result is "
+
+> "{k} more than {n} is "
+
+This was especially interesting given that for the year arithmetic task, the template "{k} years after {Y} came " didn't suffer particularly in it's accuracy.
 
 <iframe src="{{ site.baseurl }}/assets/talkie/arith_accuracy_by_answer_tens.html" title="Arithmetic accuracy by answer (groups of ten), by template" width="100%" height="620" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+
+---
+
+## Accuracy Comparison Between Year and Mathematical Arithmetic
+
+Given the results from both the year and mathematical arithmetic, we decided to compare accuracy between the two tasks. Because of the disparity in accuracy of the answer for the mathematical arithmetic task by the two prompts mentioned in the previous section, we excluded those two prompts("Add {k} to {n}, and the result is ", "{k} more than {n} is ") in order to measure whether the perceived divergence in accuracy after 1930 was real. The results show a clear divergence between the accuracy of the year arithmetic task and the mathematical arithmetic task after the 1930s. It is unclear why this sort of divergence would occur simply because of the added context of "years", and any analysis needs to be mindful of the fact that the accuracy measure shown on the figure is an average of multiple templates.
+
+<iframe src="{{ site.baseurl }}/assets/talkie/accuracy_years_vs_arith_excl45.html" title="Arithmetic accuracy by answer for Year Arithmetic and Math Arithmetic Task" width="100%" height="620" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+
+
+
 
 ---
 
