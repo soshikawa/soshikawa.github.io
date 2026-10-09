@@ -79,11 +79,15 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
 
+    def end_headers(self):
+        # Assets and iframes too, so a regenerated figure shows up on reload instead of a cached copy.
+        self.send_header("Cache-Control", "no-store")
+        super().end_headers()
+
     def send(self, body, ctype="text/html; charset=utf-8", code=200):
         data = body.encode("utf-8")
         self.send_response(code)
         self.send_header("Content-Type", ctype)
-        self.send_header("Cache-Control", "no-store")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
         self.wfile.write(data)

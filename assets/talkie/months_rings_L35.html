@@ -10,8 +10,7 @@
 <header>
   <h1>Months rings in 3D · seed 0</h1>
   <p>Prompts averaged by correct answer; points colored the same way. 1152 prompts · task accuracy 44%.</p>
-  <p>Drag to rotate, scroll to zoom. Click a class in the legend to hide or show its centroid in every panel.
-     Axes are each panel's top-3 PCs of the class centroids; units are arbitrary and differ between panels.</p>
+  <p>Axes are each panel's top-3 PCs of the class centroids; units are arbitrary and differ between panels.</p>
   <p><label><input type="checkbox" id="showPoints"> Show individual prompts (hover one to see its prompt; the cloud rescales the axes)</label></p>
 </header>
 <div id="plot"></div>
@@ -3626,7 +3625,7 @@ const pointTraces = [];
 const layout = {
   paper_bgcolor: C.surface, plot_bgcolor: C.surface, margin: { l: 0, r: 0, t: 40, b: 0 },
   font: { family: "system-ui, -apple-system, Segoe UI, sans-serif", color: C.ink2, size: 12 },
-  legend: { orientation: "h", x: 0, y: 1.035, font: { color: C.ink2 }, itemclick: "toggle", itemdoubleclick: "toggleothers" },
+  legend: { orientation: "h", x: 0, y: 0, yanchor: "top", font: { color: C.ink2 }, itemclick: "toggle", itemdoubleclick: "toggleothers" },
   hoverlabel: { bgcolor: C.surface, bordercolor: C.axis, font: { color: C.ink } },
   annotations: [],
 };

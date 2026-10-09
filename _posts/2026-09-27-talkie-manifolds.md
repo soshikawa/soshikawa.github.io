@@ -50,9 +50,9 @@ One thing to note is that the color coding here is based on the correct answer t
 
 Though the accuracy is not very high, it is still much higher than chance; the general trend we observed was that accuracy declined as *k* increased. This is most likely why there is a relatively clear manifold despite the low accuracy on average.
 
-![Month arithmetic accuracy by offset k]({{ site.baseurl }}/assets/talkie/months_accuracy_by_k.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/months_accuracy_by_k.html" title="Month arithmetic accuracy by offset k" width="100%" height="540" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
-![Weekday arithmetic accuracy by offset k]({{ site.baseurl }}/assets/talkie/weekdays_accuracy_by_k.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_accuracy_by_k.html" title="Weekday arithmetic accuracy by offset k" width="100%" height="540" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Interestingly, the month arithmetic task also demonstrated an even vs. odd month distinction, which replicated the structure in the Goodfire paper. This became especially apparent when the manifolds were projected in 3D:
 
@@ -74,7 +74,7 @@ The same task was also applied to the category of years. Even though years don't
 
 Talkie's accuracy in this task was much higher than in any of the previous tasks. Judging based purely on decades yielded an accuracy of **0.9940**.
 
-![Year arithmetic accuracy (answer decade) by offset k]({{ site.baseurl }}/assets/talkie/years_accuracy_by_k.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/years_accuracy_by_k.html" title="Year arithmetic accuracy (answer decade) by offset k" width="100%" height="540" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Because of the way talkie tokenizes numbers, a four-digit year (such as 1865 or 1914) is broken up into a 3-digit token, representing the year up to the decade, and a 1-digit token, representing the specific year (e.g. the year 1865 is represented as `['186', '5']`).
 
@@ -83,7 +83,7 @@ As the activation progresses through the layers, a semi-cyclic structure emerges
 One question that arised was whether or not the year 1930 had any significance to the model, since the model's training data cutoff year was 1930. Extrapolation of the year arithmetic task reveals that this is not the case. 
 
 
-![Year Arithmetic in years Ranging from 1700 to 2050]({{site.url}}/assets/talkie/years_2050_accuracy_by_answer_decade.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/years_2050_accuracy_by_answer_decade.html" title="Year Arithmetic in years Ranging from 1700 to 2050" width="100%" height="620" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 The extrapolation of the year arithmetic task all the way to year 2050 reveals that the answer accuracy consistently stays high beyond 1930, disproving the idea that the year representations differ after 1930, at least for arithmetic tasks.
 
@@ -91,7 +91,7 @@ However, one interesting thing to note is the sharp drop in accuracy transitioni
 
 Further investigation on the activations of talkie on this task revealed that the decade tokens seem to have a semi-cyclic structure, where the activations for each decade seem to be similar every 100 years. This is clear in a similarity matrix of the decade centroids:
 
-![Cosine similarity between decade centroids across layers]({{ site.baseurl }}/assets/talkie/years_similarity_activation_L30_35_no_rho.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/years_similarity_activation_L30_35.html" title="Cosine similarity between decade centroids across layers" width="100%" height="600" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 At both layers 30 and 35, we can observe a striped structure emerging from the decade-level activations. This demonstrates that each decade of each century is internally represented in close proximity to other decades of the same This is consistent with findings from other research that suggest language models have translational dynamics when it comes to year representations.[^2]
 
@@ -105,7 +105,7 @@ We also tested our findings on normal arithmetic tasks in the arithmetic tasks i
 
 The results found that the accuracy remains high for this task as well with about **0.980** accuracy, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
 
-![Arithmetic Accuracy by "decade"]({{site.baseurl}}/assets/talkie/arith_accuracy_by_answer_tens.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/arith_accuracy_by_answer_tens.html" title="Arithmetic Accuracy by "decade"" width="100%" height="540" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 ---
 
@@ -117,26 +117,26 @@ Referencing the Goodfire paper again[^1], we steered talkie's activations based 
 The results are on the charts below:
 
 Weekdays:
-![Weekday Arithmetic Task Steering]({{site.baseurl}}/assets/talkie/weekdays_trajectories_by_layer_geometric.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_trajectories_by_layer_geometric.html" title="Weekday Arithmetic Task Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Months:
-![Month Arithmetic Task Steering]({{site.baseurl}}/assets/talkie/months_trajectories_by_layer_geometric_answer_label.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/months_trajectories_by_layer_geometric_answer_label.html" title="Month Arithmetic Task Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Years:
-![Year Arithmetic Task Steering]({{site.baseurl}}/assets/talkie/years_trajectories_by_layer_geometric.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/years_trajectories_by_layer_geometric.html" title="Year Arithmetic Task Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 These results indicate that manifold steering is an effective method of steering the model output. The effect on model output increases as the layers progress, though not necessarily linearly. Manifold steering suddenly jumps in effectiveness between layer 20-30 in  both tasks.
 
 These results were also compared with linear steering:
 
 Weekdays:
-![Weekday Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/weekdays_trajectories_by_layer_linear_mon_wed.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_trajectories_by_layer_linear_mon_wed.html" title="Weekday Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Months:
-![Month Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/months_trajectories_by_layer_linear_answer_label.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/months_trajectories_by_layer_linear_answer_label.html" title="Month Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Years:
-![Year Arithmetic Task Linear Steering]({{site.baseurl}}/assets/talkie/years_trajectories_by_layer_linear.png)
+<iframe src="{{ site.baseurl }}/assets/talkie/years_trajectories_by_layer_linear.html" title="Year Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Linear steering reveals that the behavioral output given by the manifold steering is effective, as linear steering demonstrates little transition between the probability distribution of different categories compared to manifold steering. If set a specific start point and end point, linear steering seems to steer the output probability directly from the start point to the end point, which is consistent with the idea that the manifolds representing these concepts are multi-dimensional.
 
