@@ -105,7 +105,7 @@ We also tested our findings on normal arithmetic tasks in the arithmetic tasks i
 
 The results found that the accuracy remains high for this task as well with about **0.980** accuracy, which demonstrates that the model continues to have a good mathematical intuition in non-year contexts. However, the drop in accuracy around year 2000 is not seen in this context.
 
-<iframe src="{{ site.baseurl }}/assets/talkie/arith_accuracy_by_answer_tens.html" title="Arithmetic Accuracy by "decade"" width="100%" height="540" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/arith_accuracy_by_answer_tens.html" title="Arithmetic accuracy by answer (groups of ten), by template" width="100%" height="620" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 ---
 
