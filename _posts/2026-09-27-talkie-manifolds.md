@@ -4,9 +4,9 @@ title: "Manifolds in Talkie-13b"
 permalink: /talkie_manifolds/
 ---
 
-Talkie-13b is a vintage language model trained on English historical documents with a cutoff date of 1930.
+Talkie-13b is a vintage language model trained on English historical documents with a cutoff date of 1930[^1].
 
-Recent progress in mechanistic interpretability has found that language models organize their contents in the semantic space via low-dimensional manifolds.[^1] This raises the question of whether we can find such manifolds in models like talkie.
+Recent progress in mechanistic interpretability has found that language models organize their contents in the semantic space via low-dimensional manifolds.[^2] This raises the question of whether we can find such manifolds in models like talkie.
 
 In order to replicate the findings of the Goodfire paper, we started by trying to find simple manifolds.
 
@@ -14,7 +14,7 @@ In order to replicate the findings of the Goodfire paper, we started by trying t
 
 ## Methods
 
-We tested talkie on multiple tasks in which we believed we would be able to find manifold structure. In each task, we prompted talkie multiple times, and grouped the activations and the output probabilities by the correct answer. The activations were projected to 64 dimensions via PCA, and the output probabilities were projected onto Hellinger space to get a Euclidean distance between the different probability distributions. Each point with the same correct answer was averaged together into a "concept centroid", and a manifold structure was computed through these concept centroids. The procedure is described in detail in the Goodfire paper.[^1]
+We tested talkie on multiple tasks in which we believed we would be able to find manifold structure. In each task, we prompted talkie multiple times, and grouped the activations and the output probabilities by the correct answer. The activations were projected to 64 dimensions via PCA, and the output probabilities were projected onto Hellinger space to get a Euclidean distance between the different probability distributions. Each point with the same correct answer was averaged together into a "concept centroid", and a manifold structure was computed through these concept centroids. The procedure is described in detail in the Goodfire paper.[^2]
 
 
 
@@ -100,7 +100,7 @@ Further investigation on the activations of talkie on this task revealed that th
 
 <iframe src="{{ site.baseurl }}/assets/talkie/years_similarity_activation_L30_35.html" title="Cosine similarity between decade centroids across layers" width="100%" height="600" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
-At both layers 30 and 35, we can observe a striped structure emerging from the decade-level activations. This demonstrates that each decade of each century is internally represented in close proximity to other decades of the same This is consistent with findings from other research that suggest language models have translational dynamics when it comes to year representations.[^2]
+At both layers 30 and 35, we can observe a striped structure emerging from the decade-level activations. This demonstrates that each decade of each century is internally represented in close proximity to other decades of the same This is consistent with findings from other research that suggest language models have translational dynamics when it comes to year representations.[^3]
 
 ---
 
@@ -136,7 +136,7 @@ Given the results from both the year and mathematical arithmetic, we decided to 
 ## Manifold Steering
 
 One key finding from previous research is that is it possible to steer the model output from activation space. We experimented with manifold steering on both the weekday manifold and year arithmetic task.
-Referencing the Goodfire paper again[^1], we steered talkie's activations based on the manifold structure identified in each of **layers 10, 20, 30, and 35** of the model. Note that talkie is a model comprised of 39 layers.
+Referencing the Goodfire paper again[^2], we steered talkie's activations based on the manifold structure identified in each of **layers 10, 20, 30, and 35** of the model. Note that talkie is a model comprised of 39 layers.
 
 The results are on the charts below:
 
@@ -144,7 +144,7 @@ Weekdays:
 <iframe src="{{ site.baseurl }}/assets/talkie/weekdays_trajectories_by_layer_geometric.html" title="Weekday Arithmetic Task Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Months:
-<iframe src="{{ site.baseurl }}/assets/talkie/months_trajectories_by_layer_geometric_answer_label.html" title="Month Arithmetic Task Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/months_trajectories_by_layer_geometric.html" title="Month Arithmetic Task Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Years:
 <iframe src="{{ site.baseurl }}/assets/talkie/years_trajectories_by_layer_geometric.html" title="Year Arithmetic Task Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
@@ -154,10 +154,10 @@ These results indicate that manifold steering is an effective method of steering
 These results were also compared with linear steering:
 
 Weekdays:
-<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_trajectories_by_layer_linear_mon_wed.html" title="Weekday Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_trajectories_by_layer_linear.html" title="Weekday Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Months:
-<iframe src="{{ site.baseurl }}/assets/talkie/months_trajectories_by_layer_linear_answer_label.html" title="Month Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/months_trajectories_by_layer_linear.html" title="Month Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 Years:
 <iframe src="{{ site.baseurl }}/assets/talkie/years_trajectories_by_layer_linear.html" title="Year Arithmetic Task Linear Steering" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
@@ -168,12 +168,13 @@ Linear steering reveals that the behavioral output given by the manifold steerin
 
 ## Conclusion & Next Steps
 
-Despite being trained from pre-1930 text, talkie seems to possess a manifold structure consistent with other LLMs which are trained on modern pieces of text. Though manifolds like weekdays and months seem to be weaker for talkie, it still exists, and is effective in steering the model. It seemed to possess a particularly strong manifold structure for year arithmetic, though other tests indicate that this may point more to the strength talkie has in mathematics in general.
+Despite being trained from pre-1930 text, talkie seems to possess a certain distinct manifold structure which can be utilized for steering the model. Though manifolds like weekdays and months seem to be weaker for talkie, it still exists, and is effective in steering the model. It seemed to possess a particularly strong manifold structure for year arithmetic, though other tests indicate that this may point more to the strength talkie has in mathematics in general.
 
-Further investigation is planned to reveal whether this sort of manifold structure would hold up on historical fact recall, a task talkie would most likely be good at, considering the historical documents it was trained from.
+Further investigation is planned to reveal whether this sort of manifold structure would hold up on historical fact recall, other manifold structures which affect the model outputs.
 
 
+[^1]: https://talkie-lm.com/introducing-talkie
 
-[^1]: https://arxiv.org/abs/2605.05115v1
+[^2]: https://arxiv.org/abs/2605.05115v1
 
-[^2]: https://arxiv.org/abs/2602.15029v3
+[^3]: https://arxiv.org/abs/2602.15029v3
