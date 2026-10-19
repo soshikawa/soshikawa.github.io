@@ -43,19 +43,19 @@ We started this investigation by testing on the weekday and month arithmetic tas
 
 after which talkie answers the month.
 
-The following figures display the Activation Manifold structure of talkie at Layer 35 on the left, and the Behavior m=Manifold generated from projecting the output probabilities onto Hellinger space on the right.
+The following figures display the Activation Manifold structure of talkie at Layer 35, and the Behavior Manifold generated from projecting the output probabilities onto Hellinger space.
 
 - **r_euc** is the correlation between pairwise centroid distances in activation space and in output space.
 - **order** checks whether the activation centroids lie in calendar order.
 
-<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_rings_L35.html" title="Interactive 3D view of the weekday centroids at layer 35 and in output space" width="100%" height="720" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/weekdays_rings_L35.html" title="Interactive 3D view of the weekday centroids at layer 35 and in output space" width="100%" height="1150" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 [Open the interactive 3D weekday view]({{ site.baseurl }}/assets/talkie/weekdays_rings_L35.html)
 
 
 3D view of Weekday Activation Manifold at Layer 35, and at output space
 
-<iframe src="{{ site.baseurl }}/assets/talkie/months_rings_L35.html" title="Interactive 3D view of the month centroids at layer 35 and in output space" width="100%" height="720" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/months_rings_L35.html" title="Interactive 3D view of the month centroids at layer 35 and in output space" width="100%" height="1150" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 [Open the interactive 3D month view]({{ site.baseurl }}/assets/talkie/months_rings_L35.html)
 
@@ -89,7 +89,7 @@ Even though years don't form an obviously cyclic structure like that of months o
 
 Year arithmetic task was performed on years 1700-2099, and had a max k of +30 years. 
 
-<iframe src="{{ site.baseurl }}/assets/talkie/years_rings_L35.html" title="Interactive 3D view of the answer-decade centroids at layer 35 and in output space" width="100%" height="720" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/years_rings_L35.html" title="Interactive 3D view of the answer-decade centroids at layer 35 and in output space" width="100%" height="1150" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 [Open the interactive 3D year view]({{ site.baseurl }}/assets/talkie/years_rings_L35.html)
 

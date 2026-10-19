@@ -27,9 +27,9 @@ const layout = {
   hoverlabel: { bgcolor: C.surface, bordercolor: C.axis, font: { color: C.ink } },
   annotations: [],
 };
-// Below 600 px (a phone, or a narrow iframe) the scenes are stacked and share the window's height.
-const narrow = window.innerWidth < 600;
-const cols = narrow ? 1 : 2, rows = Math.ceil(D.panels.length / cols), gap = narrow ? 0.06 : 0.03;
+// The scenes are stacked top to bottom (activation manifold above, behaviour manifold below) and share
+// the window's height; inside the blog's iframe that is the iframe's height.
+const cols = 1, rows = D.panels.length, gap = 0.06;
 D.panels.forEach((p, i) => {
   const scene = i === 0 ? "scene" : "scene" + (i + 1);
   const col = i % cols, row = Math.floor(i / cols);
@@ -70,9 +70,8 @@ D.panels.forEach((p, i) => {
     });
   });
 });
-document.getElementById("plot").style.height = (narrow
-  ? Math.max(window.innerHeight - document.querySelector("header").offsetHeight - 8, rows * 260)
-  : rows * 520) + "px";
+document.getElementById("plot").style.height =
+  Math.max(window.innerHeight - document.querySelector("header").offsetHeight - 8, rows * 300) + "px";
 Plotly.newPlot("plot", traces, layout, { responsive: true, displaylogo: false });
 document.getElementById("showPoints").addEventListener("change", (e) => {
   Plotly.restyle("plot", { visible: e.target.checked }, pointTraces);
