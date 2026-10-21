@@ -4,6 +4,9 @@ title: "Temporal Manifolds in Talkie-13b"
 permalink: /talkie_manifolds/
 ---
 
+> **TL;DR**: We explore the internal representations of talkie, a large language model built on text data from before 1930. We looked for manifold structures via an "arithmetic" task, and found talkie's manifold representations for concepts of weekdays, months, and years. The identified manifolds have a causal effect on the model output when used in steering model activations. The investigation also reveals a drop in model accuracy on the year arithmetic task starting around 1930, which might be consequent of talkie's training cut-off date.
+
+
 Talkie-13b is a vintage language model trained on English historical documents with a cutoff date of 1930[^1].
 
 Recent progress in mechanistic interpretability has found that language models organize their contents in the semantic space via low-dimensional manifolds.[^2] 

@@ -7,6 +7,9 @@
   h1 { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
   p { color: #52514e; margin: 0 0 6px; line-height: 1.45; }
   #plot { width: 100%; }
+  /* the toolbar gets its own strip above the scenes on wide screens, and is hidden on phones */
+  @media (min-width: 600px) { #plot { margin-top: 34px; } #plot .modebar-container { top: -34px !important; } }
+  @media (max-width: 599px) { .modebar-container { display: none !important; } }
 </style>
 <header>
   <h1>Years manifold in 3D · seed 0</h1>
@@ -71,7 +74,8 @@ D.panels.forEach((p, i) => {
   });
 });
 document.getElementById("plot").style.height =
-  Math.max(window.innerHeight - document.querySelector("header").offsetHeight - 8, rows * 300) + "px";
+  Math.max(window.innerHeight - document.querySelector("header").offsetHeight - 8
+           - (window.innerWidth >= 600 ? 34 : 0), rows * 300) + "px";
 Plotly.newPlot("plot", traces, layout, { responsive: true, displaylogo: false });
 document.getElementById("showPoints").addEventListener("change", (e) => {
   Plotly.restyle("plot", { visible: e.target.checked }, pointTraces);
