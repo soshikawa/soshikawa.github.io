@@ -29,7 +29,7 @@ The manifold computed from the centroids of the activation space is referred to 
 
 ### Note on Model Accuracy
 
-For some tasks (such as the weekday and the month arithmetic tasks), the accuracy of the model answer was fairly low, although still higher than chance. Therefore, there was concern that the centroids computed for each concept would be off the mark. It is also possible to construct a centroid from talkie's *predicted* answers rather than the correct answers from each task. Ultimately, we decided to stick with Wurgaft et al.'s original methodology of computing based on the correct answer. Our steering experiments reveal that this is still an effective way to construct a manifold in this particular case.
+For some tasks (such as the weekday and the month arithmetic tasks), the accuracy of the model answer was fairly low, although still higher than chance. Therefore, there was concern that the centroids computed for each concept would be inaccurate. It is also possible to construct a centroid from talkie's *predicted* answers rather than the correct answers from each task. We kept Wurgaft et al.’s original method of grouping by the correct answer, so that our results stay comparable with theirs, and because grouping outputs by their own top answer would make the behavior manifold look clean partly by construction. Our steering experiments suggest this choice still captures a usable manifold, though predicted-answer centroids steer more cleanly.
 
 ---
 
@@ -117,7 +117,7 @@ The overall accuracy and the prompt-based accuracies are each presented in the f
 
 
 
-<iframe src="{{ site.baseurl }}/assets/talkie/years_2050_accuracy_by_answer_decade.html" title="Year Arithmetic in years Ranging from 1700 to 2050" width="100%" height="620" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
+<iframe src="{{ site.baseurl }}/assets/talkie/years_2050_accuracy_by_answer_decade.html" title="Year Arithmetic in years Ranging from 1700 to 2100" width="100%" height="620" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
 
 One perplexing phenomenon was how the accuracy seemed to recover after some time around 2030. We ran a statistical analysis to test the significance of the accuracy difference in 3 periods: pre-1930, 1930-2029, and 2030-2099. In the analysis, the average accuracy for each answer year was treated as one unit (1700 - 2099, so n=400). We compared periods with permutation tests on per-year accuracies for 1,000,000 permutations. The computed p-value was the proportion of the statistics which were at least as extreme as the observed (minimum p < 1/1,000,000 i.e. 1e-6).
@@ -215,9 +215,9 @@ Months:
 Years:
 <iframe src="{{ site.baseurl }}/assets/talkie/years_trajectories_manifold_vs_linear.html" title="Year Arithmetic Task Steering: manifold vs. linear" width="100%" height="580" style="border: 1px solid #e1e0d9; border-radius: 6px;" loading="lazy"></iframe>
 
-These results indicate that manifold steering is an effective method of steering the model output. The effect on model output increases as the layers progress, though not necessarily linearly. Manifold steering suddenly jumps in effectiveness between layer 20-30 in both tasks.
+These results indicate that manifold steering is an effective method of steering the model output. The effect on model output increases as the layers progress, though not necessarily linearly. Manifold steering suddenly jumps in effectiveness between layer 20-30 in all tasks.
 
-Linear steering reveals that the behavioral output given by the manifold steering is effective, as linear steering demonstrates little transition between the probability distribution of different categories compared to manifold steering. Given a start and an end point, linear steering seems to steer the output probability directly from the start point to the end point, which is consistent with the idea that the manifolds representing these concepts are multi-dimensional.
+Linear steering reveals that the behavioral output given by the manifold steering is comparably more effective, as linear steering demonstrates little transition between the probability distribution of different categories compared to manifold steering. Given a start and an end point, linear steering seems to steer the output probability directly from the start point to the end point, which is consistent with the idea that the manifolds representing these concepts are multi-dimensional.
 
 ---
 
