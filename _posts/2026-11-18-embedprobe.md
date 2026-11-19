@@ -4,6 +4,8 @@ title: "Can Embeddings Map Model Behavior?"
 permalink: /embedprobe/
 ---
 
+*Note: This is a preliminary post on ongoing research. Parts of the post is written with the help from Claude, and it is very unstructured. More coming soon!*
+
 Recent advances in mechanistic interpretability have increasingly pointed toward interpreting individual neurons inside models.[^1] In large language models in particular, there has been a burst of work on interpretable, steerable neurons that change the model's output. The best-known example is the "evil Qwen" neuron: adding a fixed amount to a single MLP neuron in Qwen3.5-4B turns a polite assistant into a hostile one, with the weights untouched.[^2]
 
 In large language models, there are several ways to find a particular neuron and work out what it does.
